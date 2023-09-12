@@ -32,9 +32,11 @@ public class SecurityConfiguration  {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/user/**").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/product").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/user/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/product/user").permitAll()
                                 .requestMatchers("/product/**").hasRole(ROLE_ADMIN)
+                                .requestMatchers(HttpMethod.PUT,"/user/**").hasRole(ROLE_ADMIN)
+                                .requestMatchers(HttpMethod.GET,"/user").hasRole(ROLE_ADMIN)
                                 //.anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager-> sessionManager

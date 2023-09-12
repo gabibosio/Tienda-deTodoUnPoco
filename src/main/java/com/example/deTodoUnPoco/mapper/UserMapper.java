@@ -1,10 +1,14 @@
 package com.example.deTodoUnPoco.mapper;
 
+import com.example.deTodoUnPoco.DTO.EditUserDTO;
 import com.example.deTodoUnPoco.DTO.RegisterDTO;
 import com.example.deTodoUnPoco.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class UserMapper {
@@ -31,5 +35,23 @@ public class UserMapper {
         registerDTO.setEmail(user.getEmail());
         registerDTO.setPassword(password);
         return registerDTO;
+    }
+
+    public EditUserDTO userToDTOEdit(User user){
+        EditUserDTO editUserDTO = new EditUserDTO();
+        editUserDTO.setId(user.getId());
+        editUserDTO.setName(user.getName());
+        editUserDTO.setLastName(user.getLastName());
+        editUserDTO.setEmail(user.getEmail());
+        editUserDTO.setRol(user.getRole().getName());
+        return editUserDTO;
+    }
+
+    public List<EditUserDTO> listEntityToDTO(List<User> userList){
+        List<EditUserDTO> listUser = new ArrayList<>();
+        for(User user : userList){
+            listUser.add(this.userToDTOEdit(user));
+        }
+        return listUser;
     }
 }

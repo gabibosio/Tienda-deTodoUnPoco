@@ -1,5 +1,6 @@
 package com.example.deTodoUnPoco.service.implement;
 
+import com.example.deTodoUnPoco.DTO.ProductAdminDTO;
 import com.example.deTodoUnPoco.DTO.ProductDTO;
 import com.example.deTodoUnPoco.mapper.ProductMapper;
 import com.example.deTodoUnPoco.model.Product;
@@ -27,9 +28,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> findProducts() {
-        List<Product> products = productRepository.findAll();
-        return productMapper.ListEntityToDTO(products);
+    public List<ProductDTO> findProductsUser() {
+        List<Product> listProducts = productRepository.findAll();
+        return productMapper.ListEntityToDTOForUsers(listProducts);
+    }
+
+    @Override
+    public List<ProductAdminDTO> findProductsAdmin() {
+        List<Product> listProducts = productRepository.getAll();
+        return productMapper.ListEntityToDTOForAdmin(listProducts);
     }
 
     @Override

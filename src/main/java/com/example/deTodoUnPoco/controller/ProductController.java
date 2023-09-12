@@ -1,5 +1,6 @@
 package com.example.deTodoUnPoco.controller;
 
+import com.example.deTodoUnPoco.DTO.ProductAdminDTO;
 import com.example.deTodoUnPoco.DTO.ProductDTO;
 import com.example.deTodoUnPoco.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,15 @@ public class ProductController {
         return ResponseEntity.accepted().body(productDTO);
     }
 
+    @GetMapping(value = "/user")
+    public  ResponseEntity<List<ProductDTO>> findProductsUser(){
+        List<ProductDTO> productDTOS = productService.findProductsUser();
+        return ResponseEntity.ok().body(productDTOS);
+    }
+
     @GetMapping
-    public  ResponseEntity<List<ProductDTO>> findProducts(){
-        List<ProductDTO> productDTOS = productService.findProducts();
+    public  ResponseEntity<List<ProductAdminDTO>> findProductsAdmin(){
+        List<ProductAdminDTO> productDTOS = productService.findProductsAdmin();
         return ResponseEntity.ok().body(productDTOS);
     }
 

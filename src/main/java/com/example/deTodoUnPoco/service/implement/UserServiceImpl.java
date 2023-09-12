@@ -1,5 +1,6 @@
 package com.example.deTodoUnPoco.service.implement;
 
+import com.example.deTodoUnPoco.DTO.EditUserDTO;
 import com.example.deTodoUnPoco.DTO.LoginDTO;
 import com.example.deTodoUnPoco.DTO.RegisterDTO;
 import com.example.deTodoUnPoco.mapper.UserMapper;
@@ -14,7 +15,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +37,8 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtservice;
 
     private final AuthenticationManager authenticationManager;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Response register(RegisterDTO registerDTO) {
@@ -60,6 +66,23 @@ public class UserServiceImpl implements UserService {
         Response  response = new Response();
         response.setToken(token);
         return response;
+    }
+
+    @Override
+    public EditUserDTO edit(long id, EditUserDTO editUserDTO) {
+        User user = userRepository.findById(id).orElseThrow();
+        user.setName(editUserDTO.getName());
+        user.setLastName(editUserDTO.getLastName());
+        Role role = roleRepository.findByName(editUserDTO.getRol());
+        user.setRole(role);
+        User userSave = userRepository.save(user);
+        return userMapper.userToDTOEdit(userSave);
+    }
+
+    @Override
+    public List<EditUserDTO> getUsers() {
+        List<User> userList = userRepository.findAll();
+        return userMapper.listEntityToDTO(userList);
     }
 
 }
